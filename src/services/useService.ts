@@ -1,8 +1,8 @@
 export const useService ={
    list(
     id?: 1,
-    name?: "Breno",    
-   ){
+    name?: "Luiz Felipe" 
+   ): void{
         console.log(this.list);
    }
 }

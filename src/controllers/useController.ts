@@ -9,7 +9,7 @@ export const userController = {
       message: "User list retrieved successfully",
       data: {
         id: 1,
-        name: "Hello World"
+        name: "Nina puta",
       }
     });
   },

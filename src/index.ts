@@ -1,10 +1,19 @@
 import { userController } from "./controllers/useController";
 
 const express = require('express');
+
+const port = 3000;
+const host = '0.0.0.0';
+
 const bodyParser = require('body-parser');
 
-
 const app = express();
+
+import { Request, Response } from "express";
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello World!');
+});
 
 app.use(bodyParser.json());
 app.use("/user", userController.list);
