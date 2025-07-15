@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  name      String
+  email     String  @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+
+  Driver    Driver?
+}
+enum Role {
+  ADMIN
+  MANAGER
+  DRIVER
+}
+
+model Driver {
+  id         Int     @id @default(autoincrement())
+  userId     Int     @unique
+  license    String  @unique
+  phone      String
+  active     Boolean @default(true)
+
+  user       User    @relation(fields: [userId], references: [id])
+  assignments VehicleAssignment[]
+}
+
+model Vehicle {
+  id             Int     @id @default(autoincrement())
+  plate          String  @unique
+  brand          String
+  model          String
+  year           Int
+  mileage        Int
+  status         VehicleStatus
+  createdAt      DateTime @default(now())
+
+  assignments    VehicleAssignment[]
+  maintenances   Maintenance[]
+  refuels        Refuel[]
+}
+enum VehicleStatus {
+  ACTIVE
+  IN_MAINTENANCE
+  DECOMMISSIONED
+}
+
+model VehicleAssignment {
+  id         Int      @id @default(autoincrement())
+  vehicleId  Int
+  driverId   Int
+  startDate  DateTime
+  endDate    DateTime?
+
+  vehicle    Vehicle  @relation(fields: [vehicleId], references: [id])
+  driver     Driver   @relation(fields: [driverId], references: [id])
+}
+
+model Maintenance {
+  id          Int      @id @default(autoincrement())
+  vehicleId   Int
+  description String
+  cost        Float
+  date        DateTime
+
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+}
+
+model Refuel {
+  id          Int      @id @default(autoincrement())
+  vehicleId   Int
+  date        DateTime
+  liters      Float
+  pricePerLiter Float
+  totalCost   Float
+
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+}
+
+
