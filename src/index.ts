@@ -9,7 +9,7 @@ const app = express();
 import { Request, Response } from "express";
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+  res.send('Hello World teste');
 });
 
 app.use(bodyParser.json());
